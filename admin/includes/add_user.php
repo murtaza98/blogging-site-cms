@@ -7,33 +7,29 @@
 		$password = $_POST['password'];
 		$user_role = $_POST['user_role'];
 
-		$query = "INSERT INTO ";
+		//hanle image upload
+		$profile_image = $_FILES['profile_image']['name'];
+		$profile_image_temp_location = $_FILES['profile_image']['tmp_name'];
+		$profile_image_error_code = $_FILES['profile_image']['error'];
 
+		//TODO CHECK FOR VALID EXTENTIONS FOR IMAGES
 
-		// $post_image = $_FILES['post_image']['name'];
-		// $post_image_temp_location = $_FILES['post_image']['tmp_name'];
-		// $post_image_error_code = $_FILES['post_image']['error'];
+		if($profile_image_error_code === 0 && !empty($profile_image)){
+			move_uploaded_file($profile_image_temp_location,"../images/$profile_image");
+		}else{
+			$profile_image = "default_user.png";
+		}
 
-		// //TODO CHECK FOR VALID EXTENTIONS FOR IMAGES
+		$query = "INSERT INTO users(username,password,first_name,last_name,user_email,user_role,join_date,user_image) ";
+		$query .= "VALUES('$username','$password','$first_name','$last_name','$email','$user_role',now(),'$profile_image')";
 
-		// if($post_image_error_code === 0){
-		// 	move_uploaded_file($post_image_temp_location,"../images/$post_image");
+		$query_result = mysqli_query($connection,$query);
 
-		// 	$query = "INSERT INTO posts(post_category_id,post_title,post_author,post_date,post_image,post_content,post_tags,post_comment_count,post_status) ";
-		// 	$query .= "VALUES({$post_category_id},'{$post_title}','{$post_author}',now(),'{$post_image}','{$post_content}','{$post_tags}',{$post_comment_count},'{$post_status}')";
-
-		// 	$query_result = mysqli_query($connection,$query);
-
-		// 	if($query_result){
-		// 		echo "<h4 class='bg-success text-center'>Post added</h4>";
-		// 	}else{
-		// 		die("QUERY FAILED " . mysqli_error($connection));
-		// 	}
-
-
-		// }else{
-		// 	echo "<h4>Error uploading the image</h4>";
-		// }
+		if(!$query_result){
+			die("QUERY FAILED ".mysqli_error($connection));
+		}else{
+			echo "<h4 class='bg-success text-center'>User added</h4>";
+		}
 	}
 ?>
 
@@ -54,10 +50,10 @@
 		<input type="text" class="form-control" name="last_name">		
 	</div>
 
-	<!-- <div class="form-group">
-		<label for="image">Post Image</label>
-		<input type="file" class="form-control" name="post_image">		
-	</div> -->
+	<div class="form-group">
+		<label for="image">Profile Image</label>
+		<input type="file" class="form-control" name="profile_image">		
+	</div>
 
 	<div class="form-group">
 		<label for="email">Email</label>
@@ -72,6 +68,7 @@
 	<div class="form-group">
 		<label for="role">Role</label>
 		<select name="user_role" class=" form-control selectpicker show-tick" style="width: 30%">
+			<option value="subscriber">Select Option</option>
 			<option value="subscriber">Subscriber</option>
 			<option value="admin">Admin</option>
 		</select>
