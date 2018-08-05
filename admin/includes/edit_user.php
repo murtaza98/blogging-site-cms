@@ -51,7 +51,7 @@
 		$query_result = mysqli_query($connection,$query);
 
 		if($query_result){
-			echo "<h3 class='bg-success text-center'>Post Updated</h3>";
+			echo "<h3 class='bg-success text-center'>Profile Updated</h3>";
 		}else{
 			die("QUERY FAILED " . mysqli_error($connection));
 		}

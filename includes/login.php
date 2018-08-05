@@ -34,6 +34,7 @@
 			if($username === $db_username && $password === $db_password){
 				//SUCCESS
 				//update session
+				$_SESSION['user_id'] = $db_user_id;
 				$_SESSION['username'] = $db_username;
 				$_SESSION['first_name'] = $db_first_name;
 				$_SESSION['last_name'] = $db_last_name;
