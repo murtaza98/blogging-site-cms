@@ -31,6 +31,48 @@
 
 
                 <!-- /.row -->
+                <?php
+                    //total post count
+                    $query = "SELECT * FROM posts";
+                    $query_result = mysqli_query($connection,$query);
+                    if(!$query_result){
+                        die("QUERY FAILED ".mysqli_error($connection));
+                        $num_posts = 0;
+                    }else{
+                        $num_posts = mysqli_num_rows($query_result);
+                    }
+
+                    //total post comments
+                    $query = "SELECT * FROM comments";
+                    $query_result = mysqli_query($connection,$query);
+                    if(!$query_result){
+                        die("QUERY FAILED ".mysqli_error($connection));
+                        $num_comments = 0;
+                    }else{
+                        $num_comments = mysqli_num_rows($query_result);
+                    }
+
+                    //total number of users
+                    $query = "SELECT * FROM users";
+                    $query_result = mysqli_query($connection,$query);
+                    if(!$query_result){
+                        die("QUERY FAILED ".mysqli_error($connection));
+                        $num_users = 0;
+                    }else{
+                        $num_users = mysqli_num_rows($query_result);
+                    }
+
+                    //total post count
+                    $query = "SELECT * FROM categories";
+                    $query_result = mysqli_query($connection,$query);
+                    if(!$query_result){
+                        die("QUERY FAILED ".mysqli_error($connection));
+                        $num_categories = 0;
+                    }else{
+                        $num_categories = mysqli_num_rows($query_result);
+                    }
+
+                ?>
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
                         <div class="panel panel-primary">
@@ -40,7 +82,7 @@
                                         <i class="fa fa-file-text fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class='huge'>12</div>
+                                        <div class='huge'><?php echo $num_posts ?></div>
                                         <div>Posts</div>
                                     </div>
                                 </div>
@@ -62,7 +104,7 @@
                                         <i class="fa fa-comments fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                     <div class='huge'>23</div>
+                                     <div class='huge'><?php echo $num_comments ?></div>
                                       <div>Comments</div>
                                     </div>
                                 </div>
@@ -84,7 +126,7 @@
                                         <i class="fa fa-user fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                    <div class='huge'>23</div>
+                                    <div class='huge'><?php echo $num_users ?></div>
                                         <div> Users</div>
                                     </div>
                                 </div>
@@ -106,7 +148,7 @@
                                         <i class="fa fa-list fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class='huge'>13</div>
+                                        <div class='huge'><?php echo $num_categories ?></div>
                                          <div>Categories</div>
                                     </div>
                                 </div>
