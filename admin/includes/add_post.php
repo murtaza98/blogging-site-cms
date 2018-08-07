@@ -23,8 +23,16 @@
 
 			$query_result = mysqli_query($connection,$query);
 
+			//TO GET THE LAST CREAETED ID
+			$post_id = mysqli_insert_id($connection);
+
 			if($query_result){
-				echo "<h4 class='bg-success text-center'>Post added</h4>";
+				// echo "<h4 class='bg-success text-center'>Post added</h4>";
+				echo "<h3 class='bg-success text-center'>Post Added &nbsp;
+						 <a href='../post.php?post_id={$post_id}'>View Post</a>
+						 	 or 
+						<a href = 'posts.php?source=view_all_posts'>Edit More Posts</a>
+					</h3>";
 			}else{
 				die("QUERY FAILED " . mysqli_error($connection));
 			}
@@ -44,7 +52,8 @@
 	</div>
 
 	<div class="form-group">
-		<select name = 'post_category_id' id='post_category'>
+		<label for="category">Post Category</label>
+		<select name = 'post_category_id' id='post_category' class=" form-control selectpicker show-tick" style="width: 30%">
 		<?php
             $cat_id = $post_category_id;
 
@@ -73,7 +82,11 @@
 
 	<div class="form-group">
 		<label for="title">Post Status</label>
-		<input type="text" class="form-control" name="post_status">		
+		<select name="post_status" class=" form-control selectpicker show-tick" style="width: 30%">
+			<option value="draft">Select Option</option>
+			<option value="draft">Draft</option>
+			<option value="published">Published</option>
+		</select>		
 	</div>
 
 	<div class="form-group">
@@ -88,7 +101,7 @@
 
 	<div class="form-group">
 		<label for="title">Post Content</label>
-		<textarea class="form-control" name="post_content" id="" cols="30" rows="10"></textarea>		
+		<textarea class="form-control" name="post_content" id="editor" cols="30" rows="100"></textarea>		
 	</div>
 
 	<div class="form-group">

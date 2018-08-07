@@ -31,8 +31,6 @@
 				$post_tags = $_POST['post_tags'];
 				$post_content = $_POST['post_content'];
 
-				$post_comment_count = 4;
-
 				$post_image = $_FILES['post_image']['name'];
 				$post_image_temp_location = $_FILES['post_image']['tmp_name'];
 				$post_image_error_code = $_FILES['post_image']['error'];
@@ -74,7 +72,11 @@
 					$query_result = mysqli_query($connection,$query);
 
 					if($query_result){
-						echo "<h3 class='bg-success text-center'>Post Updated</h3>";
+						echo "<h3 class='bg-success text-center'>Post Updated &nbsp;
+								 <a href='../post.php?post_id={$post_id}'>View Post</a>
+									or 
+								<a href = 'posts.php?source=view_all_posts'>Edit More Posts</a>
+							</h3>";
 					}else{
 						die("QUERY FAILED " . mysqli_error($connection));
 					}
@@ -93,10 +95,11 @@
 	</div>
 
 	<div class="form-group">
-		<select name = 'post_category_id' id='post_category'>
+		<label for="category">Post Category</label>
+		<select name = 'post_category_id' id='post_category' class=" form-control selectpicker show-tick" style="width: 30%">
 
 		<?php
-            $cat_id = $post_category_id;
+            $selected_cat_id = $post_category_id;
 
             $query = "SELECT * FROM categories"; 
 
@@ -108,8 +111,11 @@
                 while($row = mysqli_fetch_assoc($query_result)){
                     $cat_id = $row["cat_id"];
                     $cat_title = $row["cat_title"];
-
-                    echo "<option value='{$cat_id}'>{$cat_title}</option>";
+                    if($cat_id == $selected_cat_id){
+                    	echo "<option value='{$cat_id}' selected>{$cat_title}</option>";
+                    }else{
+                    	echo "<option value='{$cat_id}'>{$cat_title}</option>";
+                    }
                 }
             }
 		?>
@@ -124,7 +130,10 @@
 
 	<div class="form-group">
 		<label for="title">Post Status</label>
-		<input value="<?php echo $post_status;?>" type="text" class="form-control" name="post_status">		
+		<select name="post_status" class=" form-control selectpicker show-tick" style="width: 30%">
+			<option value="draft" <?php if($post_status == 'draft'){echo "selected";} ?> >Draft</option>
+			<option value="published" <?php if($post_status == 'published'){echo "selected";}  ?> >Published</option>
+		</select>	
 	</div>
 
 	<div class="form-group">
@@ -146,7 +155,7 @@
 
 	<div class="form-group">
 		<label for="title">Post Content</label>
-		<textarea  class="form-control" name="post_content" id="" cols="30" rows="10"><?php echo $post_content; ?>
+		<textarea  class="form-control" name="post_content" id="editor" cols="30" rows="10"><?php echo $post_content; ?>
 		</textarea>		
 	</div>
 

@@ -28,7 +28,9 @@
 		if(!$query_result){
 			die("QUERY FAILED ".mysqli_error($connection));
 		}else{
-			echo "<h4 class='bg-success text-center'>User added</h4>";
+			echo "<h4 class='bg-success text-center'>User added&nbsp;&nbsp;&nbsp;
+					<a href='posts.php?source=view_all_post'>View All Users</a>
+				</h4>";
 		}
 	}
 ?>

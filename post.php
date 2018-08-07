@@ -2,6 +2,13 @@
 
 <?php include "includes/header.php" ?>
 
+<?php
+    if(!isset($_GET['post_id'])){
+        // TODO REDIRECT TO HOMEPAGE
+        header("Location: ./index.php");
+    }
+?>
+
     <!-- Navigation -->
     <?php include "includes/navigation.php" ?>
 
@@ -50,6 +57,21 @@
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo "$post_date" ?> at 9:00 PM</p>
 
                 <hr>
+                <?php
+
+                if(isset($_SESSION['user_role'])){
+                    if($_SESSION['user_role'] === 'admin'){
+                        if(isset($_GET['post_id'])){
+                            $post_id = $_GET['post_id'];
+                            echo "<a class='btn btn-primary' href='admin/posts.php?source=edit_post&post_id={$post_id}'>Edit Post</a>";
+                        }
+                        echo '<hr>';
+                    }
+                }else{
+                    echo "no set";
+                }
+
+                ?>
 
                 <!-- Preview Image -->
                 <img class="img-responsive" src="images/<?php echo "$post_image" ?>" alt="images/default.jpg">
@@ -61,36 +83,49 @@
 
                 <hr>
 
+
+
+
+
+                
+
                 <!-- Blog Comments -->
                 <?php
                     if(isset($_POST['comment_submit'])){
+
                         $comment_author = $_POST['comment_author'];
                         $comment_email = $_POST['comment_email'];
                         $comment_content = $_POST['comment_content'];
                         $comment_status = "unapproved";
 
-                        $comment_post_id = $_GET['post_id'];
+                        if(!empty($comment_author) && !empty($comment_email) && !empty($comment_content)){
+                            $comment_post_id = $_GET['post_id'];
 
-                        $query = "INSERT INTO comments(comment_post_id,comment_author,comment_email,comment_status,comment_date,comment_content) ";
-                        $query .= "VALUES($comment_post_id,'{$comment_author}','{$comment_email}','{$comment_status}',now(),'{$comment_content}')";
+                            $query = "INSERT INTO comments(comment_post_id,comment_author,comment_email,comment_status,comment_date,comment_content) ";
+                            $query .= "VALUES($comment_post_id,'{$comment_author}','{$comment_email}','{$comment_status}',now(),'{$comment_content}')";
 
 
-                        $query_result = mysqli_query($connection,$query);
+                            $query_result = mysqli_query($connection,$query);
 
-                        if(!$query_result){
-                            die("FAILED ".mysqli_error($connection));
-                        }
+                            if(!$query_result){
+                                die("FAILED ".mysqli_error($connection));
+                            }
 
-                        //UPDATE THE COMMENT COUNT IN POST TABLE
-                        $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$comment_post_id}";
+                            //UPDATE THE COMMENT COUNT IN POST TABLE
+                            $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$comment_post_id}";
 
-                        $query_result = mysqli_query($connection,$query);
+                            $query_result = mysqli_query($connection,$query);
 
-                        if(!$query_result){
-                            die("FAILED ".mysqli_error($connection));
+                            if(!$query_result){
+                                die("FAILED ".mysqli_error($connection));
+                            }else{
+                                echo "Passed";
+                            }
                         }else{
-                            echo "Passed";
+                            echo "<script>alert('Comment Fields cannot be empty')</script>";
                         }
+
+                        
 
                     }
                 ?>
