@@ -37,10 +37,25 @@
 			}
 		}
 
+		//encrypt password
+		$query = "SELECT randSalt FROM users";
+
+        $select_randSalt_query = mysqli_query($connection,$query);
+
+        if(!$select_randSalt_query){
+            die("QUERY FAILED ".mysqli_error($connection));
+        }else{
+            while($row = mysqli_fetch_assoc($select_randSalt_query)){
+                $randSalt = $row['randSalt'];
+                break;
+            }
+            $encrypted_password = crypt($password,$randSalt);
+        }
+
 		//Update database
 		$query = "UPDATE users SET ";
 		$query .= "username = '{$username}', ";
-		$query .= "password = '{$password}', ";
+		$query .= "password = '{$encrypted_password}', ";
 		$query .= "first_name = '{$first_name}', ";
 		$query .= "last_name = '{$last_name}', ";
 		$query .= "user_email = '{$email}', ";
@@ -51,7 +66,9 @@
 		$query_result = mysqli_query($connection,$query);
 
 		if($query_result){
-			echo "<h3 class='bg-success text-center'>Profile Updated</h3>";
+			echo "<h3 class='bg-success text-center'>User added&nbsp;&nbsp;&nbsp;
+					<a href='users.php?source=view_all_users'>View All Users</a>
+				</h3>";
 		}else{
 			die("QUERY FAILED " . mysqli_error($connection));
 		}

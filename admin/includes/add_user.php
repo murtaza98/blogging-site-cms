@@ -20,8 +20,23 @@
 			$profile_image = "default_user.png";
 		}
 
+		//encrypt password
+		$query = "SELECT randSalt FROM users";
+
+        $select_randSalt_query = mysqli_query($connection,$query);
+
+        if(!$select_randSalt_query){
+            die("QUERY FAILED ".mysqli_error($connection));
+        }else{
+            while($row = mysqli_fetch_assoc($select_randSalt_query)){
+                $randSalt = $row['randSalt'];
+                break;
+            }
+            $encrypted_password = crypt($password,$randSalt);
+        }
+
 		$query = "INSERT INTO users(username,password,first_name,last_name,user_email,user_role,join_date,user_image) ";
-		$query .= "VALUES('$username','$password','$first_name','$last_name','$email','$user_role',now(),'$profile_image')";
+		$query .= "VALUES('$username','$encrypted_password','$first_name','$last_name','$email','$user_role',now(),'$profile_image')";
 
 		$query_result = mysqli_query($connection,$query);
 
@@ -29,7 +44,7 @@
 			die("QUERY FAILED ".mysqli_error($connection));
 		}else{
 			echo "<h4 class='bg-success text-center'>User added&nbsp;&nbsp;&nbsp;
-					<a href='posts.php?source=view_all_post'>View All Users</a>
+					<a href='users.php?source=view_all_users'>View All Users</a>
 				</h4>";
 		}
 	}
