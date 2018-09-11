@@ -30,6 +30,35 @@
                             die("QUERY FAILED".mysqli_error($connection));
                         }
                         break;
+                    case 'clone':
+                        $query = "SELECT * FROM posts WHERE post_id = {$post_id}";
+                        $query_result = mysqli_query($connection,$query);
+                        if(!$query_result){
+                            die("QUERY FAILED ").mysqli_query($connection);
+                        }
+
+                        $row = mysqli_fetch_assoc($query_result);
+
+                        $post_title = $row['post_title'];
+                        $post_category_id = $row['post_category_id'];
+                        $post_author = $row['post_author'];
+                        $post_status = $row['post_status'];
+                        $post_tags = $row['post_tags'];
+                        $post_content = $row['post_content'];
+                        $post_image = $row['post_image'];
+                        $post_comment_count = $row['post_comment_count'];
+                        $post_date = $row['post_date'];
+
+                        $query = "INSERT INTO posts(post_category_id,post_title,post_author,post_date,post_image,post_content,post_tags,post_comment_count,post_status) ";
+                        $query .= "VALUES({$post_category_id},'{$post_title}','{$post_author}','{$post_date}','{$post_image}','{$post_content}','{$post_tags}',{$post_comment_count},'{$post_status}')";
+
+                        $query_result = mysqli_query($connection,$query);
+
+                        if(!$query_result){
+                            die("QUERY FAILED ".mysqli_error($connection));
+                        }
+
+                        break;
                     default:
                         # code...
                         break;
@@ -49,6 +78,7 @@
                     <option value="publish">Publish</option>
                     <option value="draft">Draft</option>
                     <option value="delete">Delete</option>
+                    <option value="clone">Clone</option>
                 </select> 
             </div>
             <div class="col-xs-8 col-lg-4">
@@ -79,7 +109,7 @@
 
         <tbody> 
             <?php
-                $query = "SELECT * FROM posts";
+                $query = "SELECT * FROM posts ORDER BY post_id DESC";
 
                 $query_result = mysqli_query($connection,$query);
 

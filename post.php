@@ -36,58 +36,54 @@
                                 $post_date = $row["post_date"];
                                 $post_image = $row["post_image"];
                                 $post_content = $row["post_content"];
+                ?>
+
+                                <!-- Title -->
+                                <h1><?php echo "$post_title" ?></h1>
+
+                                <!-- Author -->
+                                <p class="lead">
+                                    by <a href="author_posts.php?post_author=<?php echo $post_author ?>"><?php echo "$post_author" ?></a>
+                                </p>
+
+                                <hr>
+
+                                <!-- Date/Time -->
+                                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo "$post_date" ?> at 9:00 PM</p>
+
+                                <hr>
+                                <?php
+
+                                if(isset($_SESSION['user_role'])){
+                                    if($_SESSION['user_role'] === 'admin'){
+                                        if(isset($_GET['post_id'])){
+                                            $post_id = $_GET['post_id'];
+                                            echo "<a class='btn btn-primary' href='admin/posts.php?source=edit_post&post_id={$post_id}'>Edit Post</a>";
+                                        }
+                                        echo '<hr>';
+                                    }
+                                }else{
+                                    // echo "no set";
+                                }
+
+                                ?>
+
+                                <!-- Preview Image -->
+                                <img class="img-responsive" src="images/<?php echo "$post_image" ?>" alt="images/default.jpg">
+
+                                <hr>
+
+                                <!-- Post Content -->
+                                <p class="lead"><?php echo "$post_content" ?></p>
+
+                                <hr>
+
+
+                <?php
                             }
                         }
                     }
-                ?>
-
-
-
-                <!-- Title -->
-                <h1><?php echo "$post_title" ?></h1>
-
-                <!-- Author -->
-                <p class="lead">
-                    by <a href="#"><?php echo "$post_author" ?></a>
-                </p>
-
-                <hr>
-
-                <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo "$post_date" ?> at 9:00 PM</p>
-
-                <hr>
-                <?php
-
-                if(isset($_SESSION['user_role'])){
-                    if($_SESSION['user_role'] === 'admin'){
-                        if(isset($_GET['post_id'])){
-                            $post_id = $_GET['post_id'];
-                            echo "<a class='btn btn-primary' href='admin/posts.php?source=edit_post&post_id={$post_id}'>Edit Post</a>";
-                        }
-                        echo '<hr>';
-                    }
-                }else{
-                    echo "no set";
-                }
-
-                ?>
-
-                <!-- Preview Image -->
-                <img class="img-responsive" src="images/<?php echo "$post_image" ?>" alt="images/default.jpg">
-
-                <hr>
-
-                <!-- Post Content -->
-                <p class="lead"><?php echo "$post_content" ?></p>
-
-                <hr>
-
-
-
-
-
-                
+                ?>                
 
                 <!-- Blog Comments -->
                 <?php
