@@ -22,7 +22,7 @@
     
                     if(isset($_GET["page"])){
                         $current_page = $_GET["page"];
-                        echo "<h3 class = 'text-center'></u>Page {$current_page}</u></h3>";
+//                        echo "<h3 class = 'text-center'></u>Page {$current_page}</u></h3>";
                     }else{
                         $current_page = 1;
                     }
