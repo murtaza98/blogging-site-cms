@@ -102,6 +102,7 @@
                 <th class="text-center">Tags</th>
                 <th class="text-center">Comments</th>
                 <th class="text-center">Date</th>
+                <th class="text-center">View Count</th>
                 <th class="text-center">Edit</th>
                 <th class="text-center">Delete</th>
             </tr>
@@ -124,6 +125,7 @@
                         $post_tags = $row["post_tags"];
                         $post_comment_count =$row["post_comment_count"];
                         $post_date = $row["post_date"];
+                        $post_view_count = $row["post_view_count"];
                         // $post_content = $row["post_content"];
 
                         echo "<tr>";
@@ -150,6 +152,7 @@
                             echo "<td class='text-center'>{$post_tags}</td>";
                             echo "<td class='text-center'>{$post_comment_count}</td>";
                             echo "<td class='text-center'>{$post_date}</td>";
+                            echo "<td class='text-center'>{$post_view_count}</td>";
                             echo "<td align='center'>
                                     <a class='btn btn-primary' href='posts.php?source=edit_post&post_id={$post_id}'>Edit</a>
                                 </td>";

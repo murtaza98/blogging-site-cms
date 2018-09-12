@@ -19,6 +19,14 @@
 
                 <!-- Blog Post -->
                 <?php
+                    
+                    $post_query_count = "SELECT COUNT(*) as count FROM posts WHERE post_status = 'published'";
+                    $find_count = mysqli_query($connection,$post_query_count);
+                    $row = mysqli_fetch_assoc($find_count);
+                    
+                    $total_post_count =  $row["count"];
+                    
+                    
                     $query = "SELECT * FROM posts WHERE post_status = 'published'";
                     include "includes/blog.php" 
                 ?>
