@@ -16,5 +16,20 @@ $(document).ready(function(){
     		});
     	}
     });
+    
+    console.log("hello");
+    
+//    function loadUsersOnline() {
+//        $.get("function.php?online_users=result",function(data){
+//            console.log("vhj");
+//            $(".usersonline").text("datga"); 
+//        });
+//    }
+//
+//    loadUsersOnline();
+//
+//    setInterval(function(){
+//        loadUsersOnline();
+//    },500);
 });
 
