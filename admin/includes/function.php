@@ -2,51 +2,45 @@
 
     function users_online(){
         
-//        if(isset($_GET["online_users"])){
+        if(isset($_GET["online_users"])){
             global $connection;
             
             
-                //
-//                session_start();
-//            
-//                
-//                include "../includes/db.php";
-                
-                $session = session_id();
-                $time = time();
-                $time_out_in_seconds = 60;
-                $time_out = $time - $time_out_in_seconds;
+                if(!$connection){
+                    session_start();
+                    include "../../includes/db.php";
 
-                $query = "SELECT id FROM users_online WHERE session = '{$session}'";
-                $query_result = mysqli_query($connection,$query);
-                $count_rows = mysqli_num_rows($query_result);
+                    $session = session_id();
+                    $time = time();
+                    $time_out_in_seconds = 60;
+                    $time_out = $time - $time_out_in_seconds;
 
-                if($count_rows == NULL || $count_rows == 0){
-                    $query = "INSERT INTO users_online(session,time) VALUES('{$session}','{$time}')";
+                    $query = "SELECT id FROM users_online WHERE session = '{$session}'";
                     $query_result = mysqli_query($connection,$query);
-                }else{
-                    //session is already in table, so just update the time
-                    $query = "UPDATE users_online SET time = '{$time}' WHERE session = '{$session}'";
+                    $count_rows = mysqli_num_rows($query_result);
+
+                    if($count_rows == NULL || $count_rows == 0){
+                        $query = "INSERT INTO users_online(session,time) VALUES('{$session}','{$time}')";
+                        $query_result = mysqli_query($connection,$query);
+                    }else{
+                        //session is already in table, so just update the time
+                        $query = "UPDATE users_online SET time = '{$time}' WHERE session = '{$session}'";
+                        $query_result = mysqli_query($connection,$query);
+                    }
+
+                    $query = "SELECT id from users_online where time > '{$time_out}'";
                     $query_result = mysqli_query($connection,$query);
+                    $num_users_online = mysqli_num_rows($query_result);
+
+                    echo $num_users_online;
                 }
-
-                $query = "SELECT id from users_online where time > '{$time_out}'";
-                $query_result = mysqli_query($connection,$query);
-                $num_users_online = mysqli_num_rows($query_result);
                 
-                return $num_users_online;
-                
-            
-        
-            
-//        }
-        
-        
+        }
 
 //      echo "<h1>{$num_users_online}</h1>";
     }
 
-//    users_online();
+    users_online();
 
 	function insert_categories(){
 		global $connection;

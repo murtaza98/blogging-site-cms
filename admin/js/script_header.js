@@ -16,20 +16,14 @@ $(document).ready(function(){
     		});
     	}
     });
+        
+    function loadUsersOnline() {
+        $.get("includes/function.php?online_users=result",function(data){
+            $(".usersonline").text(data); 
+        });
+    }
     
-    console.log("hello");
-    
-//    function loadUsersOnline() {
-//        $.get("function.php?online_users=result",function(data){
-//            console.log("vhj");
-//            $(".usersonline").text("datga"); 
-//        });
-//    }
-//
-//    loadUsersOnline();
-//
-//    setInterval(function(){
-//        loadUsersOnline();
-//    },500);
+    setInterval(function(){
+        loadUsersOnline();
+    },500);
 });
-
