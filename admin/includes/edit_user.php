@@ -36,32 +36,50 @@
 				$profile_image = "default_user.png";
 			}
 		}
-
-		//encrypt password
-		$query = "SELECT randSalt FROM users";
-
-        $select_randSalt_query = mysqli_query($connection,$query);
-
-        if(!$select_randSalt_query){
-            die("QUERY FAILED ".mysqli_error($connection));
+        
+        //encrypt_password
+        //the cost parameter in option determines the time in which the function returns result
+        
+        if(!empty($password)){
+            $encrypted_password = password_hash($password, PASSWORD_BCRYPT ,array('cost'=>12));
+            //Update database
+            $query = "UPDATE users SET ";
+            $query .= "username = '{$username}', ";
+            $query .= "password = '{$encrypted_password}', ";
+            $query .= "first_name = '{$first_name}', ";
+            $query .= "last_name = '{$last_name}', ";
+            $query .= "user_email = '{$email}', ";
+            $query .= "user_role = '{$user_role}', ";
+            $query .= "user_image = '{$profile_image}' ";
+            $query .= "WHERE user_id = {$user_id}"; 
         }else{
-            while($row = mysqli_fetch_assoc($select_randSalt_query)){
-                $randSalt = $row['randSalt'];
-                break;
-            }
-            $encrypted_password = crypt($password,$randSalt);
+            //note that here update query won't contain password
+            //Update database
+            $query = "UPDATE users SET ";
+            $query .= "username = '{$username}', ";
+            $query .= "first_name = '{$first_name}', ";
+            $query .= "last_name = '{$last_name}', ";
+            $query .= "user_email = '{$email}', ";
+            $query .= "user_role = '{$user_role}', ";
+            $query .= "user_image = '{$profile_image}' ";
+            $query .= "WHERE user_id = {$user_id}"; 
         }
 
-		//Update database
-		$query = "UPDATE users SET ";
-		$query .= "username = '{$username}', ";
-		$query .= "password = '{$encrypted_password}', ";
-		$query .= "first_name = '{$first_name}', ";
-		$query .= "last_name = '{$last_name}', ";
-		$query .= "user_email = '{$email}', ";
-		$query .= "user_role = '{$user_role}', ";
-		$query .= "user_image = '{$profile_image}' ";
-		$query .= "WHERE user_id = {$user_id}"; 
+
+		//encrypt password old way
+//		$query = "SELECT randSalt FROM users";
+//        $select_randSalt_query = mysqli_query($connection,$query);
+//        if(!$select_randSalt_query){
+//            die("QUERY FAILED ".mysqli_error($connection));
+//        }else{
+//            while($row = mysqli_fetch_assoc($select_randSalt_query)){
+//                $randSalt = $row['randSalt'];
+//                break;
+//            }
+//            $encrypted_password = crypt($password,$randSalt);
+//        }
+
+		
 
 		$query_result = mysqli_query($connection,$query);
 
@@ -128,7 +146,7 @@
 
 	<div class="form-group">
 		<label for="password">Password</label>
-		<input type="password" class="form-control" name="password" value="<?php echo $password  ?>">		
+		<input type="password" class="form-control" name="password" value="">		
 	</div>
 
 	<div class="form-group">
