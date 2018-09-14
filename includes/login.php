@@ -39,11 +39,10 @@
 			}else if($row_count > 1){
 				echo "<h3 class='text-center'><b>Duplicate username found,Please contact the site admin</b></h3>";
 			}
-
-
-
-			if($username === $db_username && $db_password === $decrypt_password){
-				//SUCCESS
+            
+            
+            if(password_verify($password,$db_password)){
+                //SUCCESS
 				//update session
 				$_SESSION['user_id'] = $db_user_id;
 				$_SESSION['username'] = $db_username;
@@ -52,10 +51,27 @@
 				$_SESSION['user_role'] = $db_user_role;
 
 				header("Location: ../admin");
-			}else{
-				//wrong password
+            }else{
+                //wrong password
 				header("Location: ../index.php");
-			}
+            }
+
+
+            //old way
+//			if($username === $db_username && $db_password === $decrypt_password){
+//				//SUCCESS
+//				//update session
+//				$_SESSION['user_id'] = $db_user_id;
+//				$_SESSION['username'] = $db_username;
+//				$_SESSION['first_name'] = $db_first_name;
+//				$_SESSION['last_name'] = $db_last_name;
+//				$_SESSION['user_role'] = $db_user_role;
+//
+//				header("Location: ../admin");
+//			}else{
+//				//wrong password
+//				header("Location: ../index.php");
+//			}
 		}
 	}
 

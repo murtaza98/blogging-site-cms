@@ -16,35 +16,35 @@
             $email = mysqli_real_escape_string($connection,$email);
             $password = mysqli_real_escape_string($connection,$password);
 
-            $query = "SELECT randSalt FROM users";
+            //the cost parameter in option determines the time in which the function returns result
+            $encrypted_password = password_hash($password, PASSWORD_BCRYPT ,array('cost'=>12));
+            
+            //old way
+//            $query = "SELECT randSalt FROM users";
+//            $select_randSalt_query = mysqli_query($connection,$query);
+//            if(!$select_randSalt_query){
+//                die("QUERY FAILED ".mysqli_error($connection));
+//            }else{
+//                while($row = mysqli_fetch_assoc($select_randSalt_query)){
+//                    $randSalt = $row['randSalt'];
+//                    break;
+//                }
+//            }
+            // echo $randSalt;
+//            $encrypted_password = crypt($password,$randSalt);
+            // echo $encrypted_password;
 
-            $select_randSalt_query = mysqli_query($connection,$query);
+            $query = "INSERT INTO users(username,password,user_email,join_date) VALUES('{$username}','{$encrypted_password}','{$email}',now())";
 
-            if(!$select_randSalt_query){
-                die("QUERY FAILED ".mysqli_error($connection));
+            $query_result = mysqli_query($connection,$query);
+
+            if(!$query_result){
+                die('QUERY FAILED '.mysqli_error($connection));
             }else{
-                while($row = mysqli_fetch_assoc($select_randSalt_query)){
-                    $randSalt = $row['randSalt'];
-                    break;
-                }
-
-                // echo $randSalt;
-
-                $encrypted_password = crypt($password,$randSalt);
-
-                // echo $encrypted_password;
-
-                $query = "INSERT INTO users(username,password,user_email,join_date) VALUES('{$username}','{$encrypted_password}','{$email}',now())";
-
-                $query_result = mysqli_query($connection,$query);
-
-                if(!$query_result){
-                    die('QUERY FAILED '.mysqli_error($connection));
-                }else{
-                    $message = "Your registration has been submitted";
-                    echo "<h4 class='text-center'>{$message}</h4>";
-                }
+                $message = "Your registration has been submitted";
+                echo "<h4 class='text-center'>{$message}</h4>";
             }
+            
         }else{
             $message = "Fields cannot be empty";
             echo "<h4 class='text-center'>{$message}</h4>";

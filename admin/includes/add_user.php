@@ -19,21 +19,22 @@
 		}else{
 			$profile_image = "default_user.png";
 		}
+        
+//        encrypt_password
+        
 
-		//encrypt password
-		$query = "SELECT randSalt FROM users";
-
-        $select_randSalt_query = mysqli_query($connection,$query);
-
-        if(!$select_randSalt_query){
-            die("QUERY FAILED ".mysqli_error($connection));
-        }else{
-            while($row = mysqli_fetch_assoc($select_randSalt_query)){
-                $randSalt = $row['randSalt'];
-                break;
-            }
-            $encrypted_password = crypt($password,$randSalt);
-        }
+		//encrypt password old way
+//		$query = "SELECT randSalt FROM users";
+//        $select_randSalt_query = mysqli_query($connection,$query);
+//        if(!$select_randSalt_query){
+//            die("QUERY FAILED ".mysqli_error($connection));
+//        }else{
+//            while($row = mysqli_fetch_assoc($select_randSalt_query)){
+//                $randSalt = $row['randSalt'];
+//                break;
+//            }
+//            $encrypted_password = crypt($password,$randSalt);
+//        }
 
 		$query = "INSERT INTO users(username,password,first_name,last_name,user_email,user_role,join_date,user_image) ";
 		$query .= "VALUES('$username','$encrypted_password','$first_name','$last_name','$email','$user_role',now(),'$profile_image')";
