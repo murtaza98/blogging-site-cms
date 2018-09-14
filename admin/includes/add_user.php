@@ -21,7 +21,8 @@
 		}
         
 //        encrypt_password
-        
+        //the cost parameter in option determines the time in which the function returns result
+        $encrypted_password = password_hash($password, PASSWORD_BCRYPT ,array('cost'=>12));
 
 		//encrypt password old way
 //		$query = "SELECT randSalt FROM users";
