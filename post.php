@@ -165,44 +165,51 @@
                 <!-- Posted Comments -->
                 <!-- BOOTSTRAP MEDIA CLASS IS USED FOR COMMENTS -->
                 <!-- Comment -->
+                
+                <div id="comments">
+                    <?php
+                        $comment_post_id = $_GET['post_id'];
+                        $comment_query = "SELECT * FROM comments WHERE comment_post_id = {$comment_post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
 
-                <?php
-                    $comment_post_id = $_GET['post_id'];
-                    $comment_query = "SELECT * FROM comments WHERE comment_post_id = {$comment_post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
+                        $comment_query_result = mysqli_query($connection,$comment_query);
 
-                    $comment_query_result = mysqli_query($connection,$comment_query);
-
-                    if(!$comment_query_result){
-                        echo "No Comments Found";
-                    }else{
-                        $row_count = mysqli_num_rows($comment_query_result);
-                        if($row_count > 0){
-                            while($row_comment = mysqli_fetch_assoc($comment_query_result)){
-                                $comment_author = $row_comment['comment_author'];
-                                $comment_date = $row_comment['comment_date'];
-                                $comment_content = $row_comment['comment_content'];                        
-                ?>
-
-                                <div class="media">
-                                    <a class="pull-left" href="#">
-                                        <img class="media-object" width="64" height="64" src="images/comment_avatar.png" alt="images/comment_avatar.png">
-                                    </a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading"><?php echo $comment_author; ?>
-                                            <small><?php echo $comment_date; ?> at 9:30 PM</small>
-                                        </h4>
-                                        <?php echo $comment_content ?>
-                                    </div>
-                                </div>
-
-                <?php
-                            }
+                        if(!$comment_query_result){
+                            echo "No Comments Found";
                         }else{
-                            echo "<h4 class='text-center'>No Comments yet!!! Be the first one to comment</h4>";
-                        }
-                    }
+                            $row_count = mysqli_num_rows($comment_query_result);
+                            if($row_count > 0){
+                                while($row_comment = mysqli_fetch_assoc($comment_query_result)){
+                                    $comment_author = $row_comment['comment_author'];
+                                    $comment_date = $row_comment['comment_date'];
+                                    $comment_content = $row_comment['comment_content'];                        
+                    ?>
 
-                ?>
+                                    <div class="media">
+                                        <a class="pull-left" href="#">
+                                            <img class="media-object" width="64" height="64" src="images/comment_avatar.png" alt="images/comment_avatar.png">
+                                        </a>
+                                        <div class="media-body">
+                                            <h4 class="media-heading"><?php echo $comment_author; ?>
+                                                <small><?php echo $comment_date; ?> at 9:30 PM</small>
+                                            </h4>
+                                            <?php echo $comment_content ?>
+                                        </div>
+                                    </div>
+
+                    <?php
+                                }
+                            }else{
+                                echo "<h4 class='text-center'>No Comments yet!!! Be the first one to comment</h4>";
+                            }
+                        }
+
+                    ?>
+                    
+                    
+                    
+                </div>
+
+                
             </div>
 
             <!-- Blog Sidebar Widgets Column -->

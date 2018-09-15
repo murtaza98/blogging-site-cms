@@ -57,13 +57,41 @@
                         if(!$query_result){
                             die("QUERY FAILED ".mysqli_error($connection));
                         }
-
+                        
+                        $last_id = mysqli_insert_id($connection);
+                        
+                        //clone comments
+                        $query = "SELECT * FROM comments WHERE comment_post_id = {$post_id}";
+                        $query_result = mysqli_query($connection,$query);
+                        if(!$query_result){
+                            die("QUERY FAILED ").mysqli_query($connection);
+                        }
+                        
+                        $comment_post_id = $last_id;
+                        while($row = mysqli_fetch_assoc($query_result)){
+                            $comment_author = $row['comment_author'];
+                            $comment_email = $row['comment_email'];
+                            $comment_status = $row['comment_status'];
+                            $comment_date = $row['comment_date'];
+                            $comment_content = $row['comment_content'];
+                            
+                            $query = "INSERT INTO comments(comment_post_id,comment_author,comment_email,comment_status,comment_date,comment_content) ";
+                            $query .= "VALUES({$comment_post_id},'{$comment_author}','{$comment_email}','{$comment_status}','{$comment_date}','$comment_content')";
+                            
+                            $query_result_comment = mysqli_query($connection,$query);
+                            
+                            if(!$query_result_comment){
+                                die("QUERY FAILED ").mysqli_query($connection);
+                            }
+                        }
+                        
                         break;
                     default:
                         # code...
                         break;
                 }
             }
+            header("Location: posts.php?source=view_all_posts");
         }
     }
 ?>
@@ -103,6 +131,7 @@
                 <th class="text-center">Comments</th>
                 <th class="text-center">Date</th>
                 <th class="text-center">View Count</th>
+                <th class="text-center">View Post</th>
                 <th class="text-center">Edit</th>
                 <th class="text-center">Delete</th>
             </tr>
@@ -150,9 +179,15 @@
                             echo "<td class='text-center'>{$post_status}</td>";
                             echo "<td class='text-center'><img width='100px' src='../images/{$post_image}' alt='Image'></td>";
                             echo "<td class='text-center'>{$post_tags}</td>";
-                            echo "<td class='text-center'>{$post_comment_count}</td>";
+//                            echo "<td class='text-center'>{$post_comment_count}</td>";
+                            echo "<td align='center'>
+                                    <a class='' href='../post.php?post_id={$post_id}#comments'>{$post_comment_count}</a>
+                                </td>";
                             echo "<td class='text-center'>{$post_date}</td>";
                             echo "<td class='text-center'>{$post_view_count}</td>";
+                            echo "<td align='center'>
+                                    <a class='btn btn-success' href='../post.php?post_id={$post_id}'>View Post</a>
+                                </td>";
                             echo "<td align='center'>
                                     <a class='btn btn-primary' href='posts.php?source=edit_post&post_id={$post_id}'>Edit</a>
                                 </td>";
