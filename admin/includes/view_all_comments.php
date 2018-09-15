@@ -1,3 +1,70 @@
+<?php
+    if(isset($_GET['delete'])){
+        $comment_id = $_GET['delete'];
+
+        $query = "DELETE FROM comments WHERE comment_id = " . $comment_id;
+
+        $query_result = mysqli_query($connection,$query); 
+
+        if(!$query_result){
+            die("QUERY FAILED".mysqli_error($connection));
+        }else{
+            if(isset($_GET["post_id"])){
+                $post_id = $_GET["post_id"];
+                header("Location: comments.php?post_id={$post_id}");
+            }else{
+                header("Location: comments.php");
+            }
+            
+        }
+    }
+?>
+<!-- unapprove comment -->
+<?php
+    if(isset($_GET['unapprove'])){
+        $comment_id = $_GET['unapprove'];
+
+        $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$comment_id}";
+        echo "$query";
+
+        $query_result = mysqli_query($connection,$query); 
+
+        if(!$query_result){
+            die("QUERY FAILED".mysqli_error($connection));
+        }else{
+            if(isset($_GET["post_id"])){
+                $post_id = $_GET["post_id"];
+                header("Location: comments.php?post_id={$post_id}");
+            }else{
+                header("Location: comments.php");
+            }
+        }
+    }
+?>
+<!-- approve comment -->
+<?php
+    if(isset($_GET['approve'])){
+        $comment_id = $_GET['approve'];
+
+        $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$comment_id}";
+
+        $query_result = mysqli_query($connection,$query); 
+
+        if(!$query_result){
+            die("QUERY FAILED".mysqli_error($connection));
+        }else{
+            if(isset($_GET["post_id"])){
+                $post_id = $_GET["post_id"];
+                header("Location: comments.php?post_id={$post_id}");
+            }else{
+                header("Location: comments.php");
+            }
+        }
+    }
+?>
+
+
+
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -56,66 +123,33 @@
                                 <a href='../post.php?post_id={$comment_post_id}'>{$post_title}</a>
                             </td>";
                         echo "<td class='text-center'>{$comment_date}</td>";
-                        echo "<td align='center'>
+                        
+                        if(isset($_GET["post_id"])){
+                            $post_id = $_GET["post_id"];
+                            echo "<td align='center'>
+                                <a class='btn btn-success' href='comments.php?approve={$comment_id}&post_id={$post_id}'>Approve</a>
+                            </td>";
+                            echo "<td align='center'>
+                                <a class='btn btn-warning' href='comments.php?unapprove={$comment_id}&post_id={$post_id}'>Unapprove</a>
+                            </td>";
+                            echo "<td align='center'>
+                                <a class='btn btn-danger' href='comments.php?delete={$comment_id}&post_id={$post_id}'>Delete</a>
+                            </td>"; 
+                        }else{
+                            echo "<td align='center'>
                                 <a class='btn btn-success' href='comments.php?approve={$comment_id}'>Approve</a>
                             </td>";
-                        echo "<td align='center'>
+                            echo "<td align='center'>
                                 <a class='btn btn-warning' href='comments.php?unapprove={$comment_id}'>Unapprove</a>
                             </td>";
-                        echo "<td align='center'>
+                            echo "<td align='center'>
                                 <a class='btn btn-danger' href='comments.php?delete={$comment_id}'>Delete</a>
                             </td>";
+                        }
+                        
                     echo "</tr>";
                 }
             }
         ?>
     </tbody>
 </table>
-<?php
-    if(isset($_GET['delete'])){
-        $comment_id = $_GET['delete'];
-
-        $query = "DELETE FROM comments WHERE comment_id = " . $comment_id;
-
-        $query_result = mysqli_query($connection,$query); 
-
-        if(!$query_result){
-            die("QUERY FAILED".mysqli_error($connection));
-        }else{
-            header("Location: comments.php");
-        }
-    }
-?>
-<!-- unapprove comment -->
-<?php
-    if(isset($_GET['unapprove'])){
-        $comment_id = $_GET['unapprove'];
-
-        $query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$comment_id}";
-        echo "$query";
-
-        $query_result = mysqli_query($connection,$query); 
-
-        if(!$query_result){
-            die("QUERY FAILED".mysqli_error($connection));
-        }else{
-            header("Location: comments.php");
-        }
-    }
-?>
-<!-- approve comment -->
-<?php
-    if(isset($_GET['approve'])){
-        $comment_id = $_GET['approve'];
-
-        $query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$comment_id}";
-
-        $query_result = mysqli_query($connection,$query); 
-
-        if(!$query_result){
-            die("QUERY FAILED".mysqli_error($connection));
-        }else{
-            header("Location: comments.php");
-        }
-    }
-?>
