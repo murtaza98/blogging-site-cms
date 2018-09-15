@@ -16,7 +16,13 @@
 
     <tbody> 
         <?php
-            $query = "SELECT * FROM comments ORDER BY comment_id DESC";
+            if(isset($_GET["post_id"])){
+                $post_id = $_GET["post_id"];
+                $query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} ORDER BY comment_id DESC";
+            }else{
+                $query = "SELECT * FROM comments ORDER BY comment_id DESC";
+            }
+            
 
             $query_result = mysqli_query($connection,$query);
 

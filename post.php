@@ -119,17 +119,6 @@
                             if(!$query_result){
                                 die("FAILED ".mysqli_error($connection));
                             }
-
-                            //UPDATE THE COMMENT COUNT IN POST TABLE
-                            $query = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = {$comment_post_id}";
-
-                            $query_result = mysqli_query($connection,$query);
-
-                            if(!$query_result){
-                                die("FAILED ".mysqli_error($connection));
-                            }else{
-                                echo "Passed";
-                            }
                         }else{
                             echo "<script>alert('Comment Fields cannot be empty')</script>";
                         }

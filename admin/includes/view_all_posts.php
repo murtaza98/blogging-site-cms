@@ -46,11 +46,10 @@
                         $post_tags = $row['post_tags'];
                         $post_content = $row['post_content'];
                         $post_image = $row['post_image'];
-                        $post_comment_count = $row['post_comment_count'];
                         $post_date = $row['post_date'];
 
-                        $query = "INSERT INTO posts(post_category_id,post_title,post_author,post_date,post_image,post_content,post_tags,post_comment_count,post_status) ";
-                        $query .= "VALUES({$post_category_id},'{$post_title}','{$post_author}','{$post_date}','{$post_image}','{$post_content}','{$post_tags}',{$post_comment_count},'{$post_status}')";
+                        $query = "INSERT INTO posts(post_category_id,post_title,post_author,post_date,post_image,post_content,post_tags,post_status) ";
+                        $query .= "VALUES({$post_category_id},'{$post_title}','{$post_author}','{$post_date}','{$post_image}','{$post_content}','{$post_tags}','{$post_status}')";
 
                         $query_result = mysqli_query($connection,$query);
 
@@ -64,7 +63,7 @@
                         $query = "SELECT * FROM comments WHERE comment_post_id = {$post_id}";
                         $query_result = mysqli_query($connection,$query);
                         if(!$query_result){
-                            die("QUERY FAILED ").mysqli_query($connection);
+                            die("QUERY FAILED ").mysqli_error($connection);
                         }
                         
                         $comment_post_id = $last_id;
@@ -81,7 +80,7 @@
                             $query_result_comment = mysqli_query($connection,$query);
                             
                             if(!$query_result_comment){
-                                die("QUERY FAILED ").mysqli_query($connection);
+                                die("QUERY FAILED ").mysqli_error($connection);
                             }
                         }
                         
@@ -152,7 +151,6 @@
                         $post_status = $row["post_status"];
                         $post_image = $row["post_image"];
                         $post_tags = $row["post_tags"];
-                        $post_comment_count =$row["post_comment_count"];
                         $post_date = $row["post_date"];
                         $post_view_count = $row["post_view_count"];
                         // $post_content = $row["post_content"];
@@ -179,9 +177,20 @@
                             echo "<td class='text-center'>{$post_status}</td>";
                             echo "<td class='text-center'><img width='100px' src='../images/{$post_image}' alt='Image'></td>";
                             echo "<td class='text-center'>{$post_tags}</td>";
-//                            echo "<td class='text-center'>{$post_comment_count}</td>";
+                            
+                        
+                        
+                            //get comment count
+                            $query = "SELECT COUNT(*) as count FROM comments WHERE comment_post_id = {$post_id}";
+                            $query_result_comment = mysqli_query($connection,$query);
+                            if(!$query_result_comment){
+                                die("QUERY FAILED ".mysqli_error($connection));
+                            }else{
+                                $row = mysqli_fetch_assoc($query_result_comment);
+                                $post_comment_count = $row["count"];
+                            }
                             echo "<td align='center'>
-                                    <a class='' href='../post.php?post_id={$post_id}#comments'>{$post_comment_count}</a>
+                                    <a class='' href='comments.php?post_id={$post_id}'>{$post_comment_count}</a>
                                 </td>";
                             echo "<td class='text-center'>{$post_date}</td>";
                             echo "<td class='text-center'>{$post_view_count}</td>";
