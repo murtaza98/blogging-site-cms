@@ -1,5 +1,14 @@
 <?php
 
+    function escape($string){
+        //prevent sql injection
+        global $connection;
+        
+//        strip_tags function is used to remove html tags from string
+//        return mysqli_real_escape_string($connection,trim(strip_tags($string)));
+        return mysqli_real_escape_string($connection,trim($string));
+    }
+
     function users_online(){
         
         if(isset($_GET["online_users"])){

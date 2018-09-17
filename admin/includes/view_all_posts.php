@@ -121,8 +121,8 @@
             <tr>
                 <th><input type="checkbox" name="" id="selectAllBoxes"></th>
                 <th class="text-center">Id</th>
-                <th class="text-center">Author</th>
                 <th class="text-center">Title</th>
+                <th class="text-center">Author</th>
                 <th class="text-center">Category</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Image</th>

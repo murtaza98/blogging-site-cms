@@ -58,7 +58,7 @@
     </tbody>
 </table>
 <?php
-    if(isset($_GET['delete'])){
+    if(isset($_GET['delete']) && $_SESSION === 'admin'){
         $user_id = $_GET['delete'];
 
         $query = "DELETE FROM users WHERE user_id = " . $user_id;
@@ -74,7 +74,7 @@
 ?>
 <!-- unapprove comment -->
 <?php
-    if(isset($_GET['change_to_admin'])){
+    if(isset($_GET['change_to_admin']) && $_SESSION === 'admin'){
         $user_id = $_GET['change_to_admin'];
 
         $query = "UPDATE users SET user_role = 'admin' WHERE user_id = {$user_id}";
@@ -91,7 +91,7 @@
 ?>
 <!-- approve comment -->
 <?php
-    if(isset($_GET['change_to_subscriber'])){
+    if(isset($_GET['change_to_subscriber']) && $_SESSION === 'admin'){
         $user_id = $_GET['change_to_subscriber'];
 
         $query = "UPDATE users SET user_role = 'subscriber' WHERE user_id = {$user_id}";

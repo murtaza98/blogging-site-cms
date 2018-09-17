@@ -125,7 +125,32 @@
 
 	<div class="form-group">
 		<label for="title">Post Author</label>
-		<input value="<?php echo $post_author; ?>" type="text" class="form-control" name="post_author">		
+		
+		<select name = 'post_author' id='post_author' class="form-control selectpicker show-tick" style="width: 30%">
+		<?php
+            $query = "SELECT user_id,username FROM users WHERE user_role = 'admin'"; 
+
+            $query_result = mysqli_query($connection,$query);
+
+            if(!$query_result){
+                echo "Error!!!! Could not load categories ".mysqli_error($connection);
+            }else{
+                while($row = mysqli_fetch_assoc($query_result)){
+                    $user_id = $row["user_id"];
+                    $username = $row["username"];
+                    
+                    if($post_author === $username){
+                        echo "<option value='{$username}' selected>{$username}</option>";
+                    }else{
+                        echo "<option value='{$username}'>{$username}</option>";
+                    }
+                }
+            }
+		?>
+		</select>
+		
+		
+<!--		<input value="<?php //echo $post_author; ?>" type="text" class="form-control" name="post_author">		-->
 	</div>
 
 	<div class="form-group">
